@@ -34,7 +34,7 @@ def q_submit_server():
     dest = request.form['expDest']
     clean_request = {"name": name, "paths": paths, "dest": dest}
     lb_check = lb.check_statuses()
-    lb_url = lb_check["URL"] + "/q/submit/server"
+    lb_url = lb_check["url"] + "/q/submit/server"
     res = requests.post(lb_url, json=clean_request)
     response = {
         "load_balancer_response": lb_check,
