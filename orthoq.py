@@ -31,15 +31,13 @@ class OrthoQ:
         return str(num) + ".txt"
     
     def write(self, qpath, contents):
-        with open(qpath, "w", newline='\r\n') as fp:
-            contents = json.dumps(contents)
+        with open(qpath, "w") as fp:
+            contents = json.dumps(contents, indent=4)
             fp.write(contents)
     
-    def push(self, name, paths, dest):
+    def push(self, contents):
         nid = self.next_new_id
         qpath = self.qdir / nid
-        clean_paths = paths.strip("\n").replace("\r", "")
-        contents = {"name": name, "paths": clean_paths, "dest": dest}
         self.write(qpath, contents)
         return qpath
     

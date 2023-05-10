@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from orthoq import OrthoQ
 
 app = Flask(__name__, template_folder="templates")
@@ -20,12 +20,6 @@ def status():
 @app.route("/q/submit/server", methods=["POST"])
 def q_submit_server():
     ''' show a message saying the ortho was successfully submitted q'''
-    print(request.get_json())
-    # name = request.form["expName"]
-    # paths = request.form['expPaths']
-    # dest = request.form['expDest']
-    # qpath = q.push(name, paths, dest)
+    submission = request.get_json()
+    qpath = q.push(submission)
     return jsonify(request.get_json())
-    # return render_template("submitted.html", submission_name=name, 
-    #                        submission_paths=paths, submission_dest=dest,
-    #                        qloc=qpath)
