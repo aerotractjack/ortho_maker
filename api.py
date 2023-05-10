@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonfify, render_template
 from orthoq import OrthoQ
 
 app = Flask(__name__, template_folder="templates")
@@ -11,7 +11,7 @@ def status():
     contents = q.contents
     queue_len = len(contents)
     busy = queue_len > 0
-    return {"busy": busy, "queue_len": queue_len}
+    return jsonfify({"busy": busy, "queue_len": queue_len})
 
 @app.route("/q/contents")
 def q_contents():
