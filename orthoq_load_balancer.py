@@ -1,6 +1,6 @@
 import requests
 import json
-from secrets import URLS
+from secret import URLS
 
 class OrthoQLoadBalancer:
 

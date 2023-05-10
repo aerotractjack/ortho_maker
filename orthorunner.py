@@ -7,7 +7,7 @@ from distutils.dir_util import copy_tree
 import shutil
 import time
 import datetime
-from secrets import PIX4D_LICENSE
+from secret import PIX4D_LICENSE
 
 '''
 Poll the submission queue and run the Pix4D engine to process orthomosaics
