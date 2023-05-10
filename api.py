@@ -23,8 +23,8 @@ def q_submit_server():
     name = request.form["expName"]
     paths = request.form['expPaths']
     dest = request.form['expDest']
-    qpath = q.push(name, paths, dest)
-    return jsonify({"status": submitted})
+    # qpath = q.push(name, paths, dest)
+    return jsonify({"status": "submitted"})
     # return render_template("submitted.html", submission_name=name, 
     #                        submission_paths=paths, submission_dest=dest,
     #                        qloc=qpath)
