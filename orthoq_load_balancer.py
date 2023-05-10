@@ -38,7 +38,7 @@ class OrthoQLoadBalancer:
         }
         return out
 
-    def show_statuses(self):
+    def show_all_statuses(self):
         ''' return the statuses for all servers '''
         outs = []
         for k in self.urls.keys():

@@ -18,7 +18,7 @@ def index():
 @app.route("/statuses")
 def statuses():
     ''' check the statuses of each worker '''
-    stats = lb.check_statuses()
+    stats = lb.show_all_statuses()
     return jsonify(stats)
 
 @app.route("/health")
