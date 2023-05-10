@@ -11,7 +11,11 @@ def status():
     contents = q.contents
     queue_len = len(contents)
     busy = queue_len > 0
-    return jsonify({"busy": busy, "queue_len": queue_len})
+    resp_body = {
+        "busy": busy, "queue_len": queue_len,
+        "contents": q.contents
+    }
+    return jsonify(resp_body)
 
 @app.route("/q/contents")
 def q_contents():
