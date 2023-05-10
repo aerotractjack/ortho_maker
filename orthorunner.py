@@ -17,7 +17,7 @@ Poll the submission queue and run the Pix4D engine to process orthomosaics
 
 class OrthoRunner:
 
-    def __init__(self, q, workdir, pollt=3):
+    def __init__(self, q, pollt=3):
         '''
         q (OrthoQ): Queue object to track submissions
         workdir (str or path): Path to work folder for Pix4D
@@ -25,7 +25,6 @@ class OrthoRunner:
         '''
         self.q = q
         self.finished_q = OrthoQ("/home/aerotract/NAS/main/OrthoQ_finished")
-        self.workdir = Path(workdir)
         self.pollt = int(pollt)
 
     def log(self, *msg):
@@ -49,14 +48,14 @@ class OrthoRunner:
         dest = contents["dest"]
         return (name, src_img_paths, dest)
     
-    def copy_and_clean_results(self, queue_path, name, dest):
+    def copy_and_clean_results(self, queue_path, name, dest, workdir):
         ''' copy the results from the local working dir into the NAS, and 
         remove files from local working dir '''
-        copy_tree(self.workdir, dest)
+        copy_tree(workdir, dest)
         shutil.copy(queue_path, dest)
         queue_path.unlink()
         self.finished_q.push({"name": name, "dest": dest})
-        shutil.rmtree(self.workdir)
+        shutil.rmtree(workdir)
 
     def poll_and_run(self):
         ''' poll the queue and run Pix4D ortho generation '''
@@ -69,8 +68,8 @@ class OrthoRunner:
             c, queue_path = next
             self.log("starting", c, queue_path)
             name, src_img_paths, dest = self.parse_contents(c)
-            self.run_project(name, src_img_paths)
-            self.copy_and_clean_results(queue_path, name, dest)
+            wdir = self.run_project(name, src_img_paths)
+            self.copy_and_clean_results(queue_path, name, dest, wdir)
             self.log("finished", c, queue_path)
             time.sleep(self.pollt)
 
@@ -78,15 +77,17 @@ class OrthoRunner:
         ''' generate an orthomosaic using Pix4D '''
         self.workdir.mkdir(parents=True, exist_ok=True)
         login_seat(*PIX4D_LICENSE)
-        project = create_project(name, src_img_paths, work_dir=self.workdir.as_posix())
+        workdir = "/home/aerotract/pix4d-workdir/" + name
+        project = create_project(name, src_img_paths, work_dir=workdir)
         calib_algo = calib.make_algo()
         dense_algo = dense.make_algo()
         ortho_algo = ortho.make_algo()
         pipeline = Pipeline(algos=(calib_algo, dense_algo, ortho_algo))
         pipeline.run(project)
+        return workdir
 
 if __name__ =="__main__":
     q = OrthoQ("~/ORTHO_Q")
-    runner = OrthoRunner(q, "/home/aerotract/pix4d-workdir")
+    runner = OrthoRunner(q)
     print("Beginning to poll for files in queue...")
     runner.poll_and_run()
