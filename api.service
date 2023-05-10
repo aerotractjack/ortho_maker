@@ -1,0 +1,13 @@
+[Unit] 
+Description=Run OrthoQ api for running ortho jobs
+After=network.target
+
+[Service]
+User=aerotract
+WorkingDirectory=/home/aerotract/software/ortho_maker
+ExecStart=/home/aerotract/software/ortho_maker/run-api.sh
+Restart=always
+Environment=PYTHONPATH=/home/aerotract/software/ortho_maker
+
+[Install]
+WantedBy=multi-user.target
