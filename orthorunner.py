@@ -94,5 +94,6 @@ if __name__ =="__main__":
     from orthoq import OrthoQ
     q = OrthoQ("~/ORTHO_Q")
     runner = OrthoRunner(q, "/home/aerotract/pix4d-workdir")
+    print("Beginning to poll for files in queue...")
     runner.poll_and_run()
 
