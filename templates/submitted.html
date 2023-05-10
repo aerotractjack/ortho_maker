@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OrthoQ</title>
+</head>
+<body>
+    <h2>Submission successful</h2>
+    <p>
+        Name: {{ submission_name }}
+        <br>
+        Path(s): {{ submission_paths }}
+        <br>
+        Ortho destination: {{ submission_dest }}
+        <br>
+        Queue location: {{ qloc }}
+    </p>
+    <nav>
+        <a href="{{ url_for('index') }}">index</a>
+        <a href="{{ url_for('health') }}">health</a>
+        <a href="{{ url_for('q_contents') }}">q contents</a>
+        <a href="{{ url_for('q_submit') }}">q submit</a>
+    </nav>
+</body>
+</html>
