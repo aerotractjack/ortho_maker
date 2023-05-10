@@ -50,7 +50,6 @@ class OrthoRunner:
     def copy_and_clean_results(self, queue_path, name, dest):
         ''' copy the results from the local working dir into the NAS, and 
         remove files from local working dir '''
-
         copy_tree(self.workdir, dest)
         try:
             shutil.copy(self.workdir / name / (name + ".log"), dest)

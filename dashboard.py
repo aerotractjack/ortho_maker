@@ -15,6 +15,12 @@ def index():
     ''' index method '''
     return render_template("index.html")
 
+@app.route("/statuses")
+def statuses():
+    ''' check the statuses of each worker '''
+    stats = lb.check_statuses()
+    return jsonify(stats)
+
 @app.route("/health")
 def health():
     ''' health check '''

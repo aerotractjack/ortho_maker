@@ -50,7 +50,6 @@ class OrthoQ:
         with open(path, "r") as fp:
             contents = fp.read()
         contents = json.loads(contents)
-        contents["paths"] = contents["paths"].split("\n")
         return contents
 
     def pop(self):

@@ -38,6 +38,20 @@ class OrthoQLoadBalancer:
         }
         return out
 
+    def show_statuses(self):
+        ''' return the statuses for all servers '''
+        outs = []
+        for k in self.urls.keys():
+            url = self.urls[k]
+            qlen = self.try_status_check(url)
+            out = {
+                "url": url,
+                "name": k,
+                "queue_len": qlen
+            }
+            outs.append(out)
+        return outs
+
 if __name__ == "__main__":
     lb = OrthoQLoadBalancer()
     print(lb.check_statuses())
