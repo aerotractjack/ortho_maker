@@ -40,10 +40,14 @@ def q_submit_server():
     dest = request.form['expDest']
     clean_request = {"name": name, "paths": paths, "dest": dest}
     lb_check = lb.check_statuses()
-    lb_url = lb_check["url"] + "/q/submit/server"
+    lb_url = "http://192.168.1.41:5005" + "/q/submit/server"
     res = requests.post(lb_url, json=clean_request)
+    resp = {
+        "load_balancer_response": lb_check,
+        "submission_response": res.json()
+    }
     # qpath = q.push(name, paths, dest)
-    return jsonify(lb_check)
+    return jsonify(res)
     # return render_template("submitted.html", submission_name=name, 
     #                        submission_paths=paths, submission_dest=dest,
     #                        qloc=qpath)

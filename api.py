@@ -20,13 +20,12 @@ def status():
 @app.route("/q/submit/server", methods=["POST"])
 def q_submit_server():
     ''' show a message saying the ortho was successfully submitted q'''
-    print(request.form)
     print(request.get_json())
     # name = request.form["expName"]
     # paths = request.form['expPaths']
     # dest = request.form['expDest']
     # qpath = q.push(name, paths, dest)
-    return jsonify({"status": "submitted"})
+    return jsonify(request.get_json())
     # return render_template("submitted.html", submission_name=name, 
     #                        submission_paths=paths, submission_dest=dest,
     #                        qloc=qpath)
