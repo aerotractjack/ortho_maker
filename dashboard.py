@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
+import requests
 from orthoq import OrthoQ
 from orthoq_load_balancer import OrthoQLoadBalancer
 
@@ -34,13 +35,16 @@ def q_submit():
 def q_submit_server():
     ''' show a message saying the ortho was successfully submitted q'''
     name = request.form["expName"]
-    paths = request.form['expPaths']
+    paths = request.form['expPaths'].strip("\r\n").split("\r\n")
+    paths = [p for p in paths if p != '']
     dest = request.form['expDest']
+    clean_request = {"name": name, "paths": paths, "dest": dest}
     lb_check = lb.check_statuses()
     lb_url = lb_check["url"] + "/q/submit/server"
-    print(request.form)
+    res = requests.post(lb_url, json=clean_request)
     # qpath = q.push(name, paths, dest)
-    return render_template("submitted.html", submission_name=name, 
-                           submission_paths=paths, submission_dest=dest,
-                           qloc=qpath)
+    return jsonify(lb_check)
+    # return render_template("submitted.html", submission_name=name, 
+    #                        submission_paths=paths, submission_dest=dest,
+    #                        qloc=qpath)
 
