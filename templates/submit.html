@@ -1,27 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>OrthoQ Submittion</title>
-</head>
-
-<body>
-    <form action="{{ url_for('q_submit_server') }}" method="post" id="expPathForm">
-        Export Name: <br><textarea rows="1" cols="60" name="expName"></textarea>
-        <br>
-        Source Image Location(s) [separated by newline]: <br><textarea rows="5" cols="60" name="expPaths"></textarea>
-        <br>
-        Export Destination: <br><textarea rows="1" cols="60" name="expDest"></textarea>
-        <br>
-        <input type="submit">
-    </form>
-    <nav>
-        <a href="{{ url_for('index') }}">index</a>
-        <a href="{{ url_for('health') }}">health</a>
-        <a href="{{ url_for('q_contents') }}">q contents</a>
-        <a href="{{ url_for('q_submit') }}">q submit</a>
-    </nav>
-</body>
-
-</html>
+{% extends 'base.html' %}
+{% block body %}
+<form action="{{ url_for('q_submit_server') }}" method="post" id="expPathForm">
+    Export Name: <br><textarea rows="1" cols="60" name="expName"></textarea>
+    <br>
+    Source Image Location(s) [separated by newline]: <br><textarea rows="5" cols="60" name="expPaths"></textarea>
+    <br>
+    Export Destination: <br><textarea rows="1" cols="60" name="expDest"></textarea>
+    <br>
+    <input type="submit">
+</form>
+{% endblock %}

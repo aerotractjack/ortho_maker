@@ -5,7 +5,8 @@
     <title>OrthoQ</title>
 </head>
 <body>
-    {{ contents }}
+    {% block body %}
+    {% endblock %}
     <nav>
         <a href="{{ url_for('index') }}">index</a>
         <a href="{{ url_for('health') }}">health</a>

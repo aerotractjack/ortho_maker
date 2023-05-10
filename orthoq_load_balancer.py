@@ -2,19 +2,19 @@ import requests
 import json
 from secret import URLS
 
+'''
+Load Balancer to manage distributing work evenly between servers
+'''
+
 class OrthoQLoadBalancer:
 
     def __init__(self, urls=URLS):
         self.urls = urls
 
-    def try_status_check(self, ip):
+    def try_status_check(self, url):
+        ''' check the /status endpoint for a url '''
         try:
-            print("===============================")
-            print(ip + "/status")
-            status_req = requests.get(ip + "/status")
-            print(status_req.text)
-            print(status_req.status_code)
-            print("===============================")
+            status_req = requests.get(url + "/status")
             status = json.loads(status_req.text)
             qlen = status["queue_len"]
             return qlen
@@ -22,11 +22,12 @@ class OrthoQLoadBalancer:
             return float('inf')
 
     def check_statuses(self):
+        ''' check all servers and record the least busy one '''
         min_queue_len = float('inf')
         min_queue_name = ""
         for k in self.urls.keys():
-            ip = self.urls[k]
-            qlen = self.try_status_check(ip)
+            url = self.urls[k]
+            qlen = self.try_status_check(url)
             if qlen < min_queue_len:
                 min_queue_len = qlen
                 min_queue_name = k

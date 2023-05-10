@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>OrthoQ</title>
-</head>
-<body>
-    <h1>Healthy!</h1>
-    <nav>
-        <a href="{{ url_for('index') }}">index</a>
-        <a href="{{ url_for('health') }}">health</a>
-        <a href="{{ url_for('q_contents') }}">q contents</a>
-        <a href="{{ url_for('q_submit') }}">q submit</a>
-    </nav>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block body %}
+<h1>Healthy!</h1>
+{% endblock %}
