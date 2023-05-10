@@ -16,7 +16,7 @@ def status():
 @app.route("/q/contents")
 def q_contents():
     ''' view contents of the queue '''
-    return render_template("contents.html", contents=q.contents)
+    return jsonify(q.contents)
 
 @app.route("/q/submit/server", methods=["POST"])
 def q_submit_server():
@@ -25,6 +25,7 @@ def q_submit_server():
     paths = request.form['expPaths']
     dest = request.form['expDest']
     qpath = q.push(name, paths, dest)
-    return render_template("submitted.html", submission_name=name, 
-                           submission_paths=paths, submission_dest=dest,
-                           qloc=qpath)
+    return jsonify({"status": submitted})
+    # return render_template("submitted.html", submission_name=name, 
+    #                        submission_paths=paths, submission_dest=dest,
+    #                        qloc=qpath)
