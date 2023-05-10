@@ -8,6 +8,7 @@ import shutil
 import time
 import datetime
 import sys
+from orthoq import OrthoQ
 from secret import PIX4D_LICENSE
 
 '''
@@ -23,6 +24,7 @@ class OrthoRunner:
         pollt (int): time to sleep between polling queue
         '''
         self.q = q
+        self.finished_q = OrthoQ("/home/aerotract/NAS/main/OrthoQ_finished")
         self.workdir = Path(workdir)
         self.pollt = int(pollt)
 
@@ -53,6 +55,7 @@ class OrthoRunner:
         copy_tree(self.workdir, dest)
         shutil.copy(queue_path, dest)
         queue_path.unlink()
+        self.finished_q.push({"name": name, "dest": dest})
         shutil.rmtree(self.workdir)
 
     def poll_and_run(self):
@@ -83,7 +86,6 @@ class OrthoRunner:
         pipeline.run(project)
 
 if __name__ =="__main__":
-    from orthoq import OrthoQ
     q = OrthoQ("~/ORTHO_Q")
     runner = OrthoRunner(q, "/home/aerotract/pix4d-workdir")
     print("Beginning to poll for files in queue...")
