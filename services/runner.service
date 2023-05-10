@@ -5,10 +5,10 @@ After=network.target
 [Service]
 Type=simple
 User=aerotract
-WorkingDirectory=/home/aerotract/software/ortho_runner
-ExecStart=/usr/bin/python3 orthorunner.py
+WorkingDirectory=/home/aerotract/software/ortho_maker
+ExecStart=/bin/ls
 Restart=always
-Environment=PYTHONPATH=/home/aerotract/software/orthoq
+Environment=PYTHONPATH=/home/aerotract/software/ortho_maker
 
 [Install]
 WantedBy=multi-user.target
