@@ -51,18 +51,10 @@ class OrthoRunner:
         ''' copy the results from the local working dir into the NAS, and 
         remove files from local working dir '''
         copy_tree(self.workdir, dest)
-        try:
-            shutil.copy(self.workdir / name / (name + ".log"), dest)
-        except Exception as e:
-            print(e)
-            print("could not copy log file")
-        try:
-            shutil.copy(queue_path, dest)
-        except Exception as e:
-            print(e)
-            print("could not copy queue file")
+        shutil.copy(self.workdir / name / (name + ".log"), dest)
+        shutil.copy(queue_path, dest)
         queue_path.unlink()
-        shutil.rmtree(self.workdir / name)
+        shutil.rmtree(self.workdir)
 
     def poll_and_run(self):
         ''' poll the queue and run Pix4D ortho generation '''
