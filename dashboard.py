@@ -47,7 +47,7 @@ def q_submit_server():
         "submission_response": res.json()
     }
     # qpath = q.push(name, paths, dest)
-    return jsonify(res)
+    return jsonify(resp)
     # return render_template("submitted.html", submission_name=name, 
     #                        submission_paths=paths, submission_dest=dest,
     #                        qloc=qpath)
