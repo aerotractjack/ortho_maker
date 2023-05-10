@@ -75,10 +75,10 @@ class OrthoRunner:
 
     def run_project(self, name, src_img_paths):
         ''' generate an orthomosaic using Pix4D '''
-        self.workdir.mkdir(parents=True, exist_ok=True)
         login_seat(*PIX4D_LICENSE)
-        workdir = "/home/aerotract/pix4d-workdir/" + name
-        project = create_project(name, src_img_paths, work_dir=workdir)
+        workdir = Path("/home/aerotract/pix4d-workdir/" + name)
+        workdir.mkdir(parents=True, exist_ok=True)
+        project = create_project(name, src_img_paths, work_dir=workdir.as_posix())
         calib_algo = calib.make_algo()
         dense_algo = dense.make_algo()
         ortho_algo = ortho.make_algo()
