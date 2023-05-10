@@ -9,10 +9,12 @@ class OrthoQLoadBalancer:
 
     def try_status_check(self, ip):
         try:
+            print("===============================")
             print(ip + "/status")
             status_req = requests.get(ip + "/status")
             print(status_req.text)
             print(status_req.status_code)
+            print("===============================")
             status = json.loads(status_req.text)
             qlen = status["queue_len"]
             return qlen

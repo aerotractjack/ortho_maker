@@ -17,11 +17,6 @@ def status():
     }
     return jsonify(resp_body)
 
-@app.route("/q/contents")
-def q_contents():
-    ''' view contents of the queue '''
-    return jsonify(q.contents)
-
 @app.route("/q/submit/server", methods=["POST"])
 def q_submit_server():
     ''' show a message saying the ortho was successfully submitted q'''
