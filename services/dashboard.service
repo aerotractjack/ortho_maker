@@ -1,11 +1,11 @@
 [Unit] 
-Description=Run OrthoQ api for running ortho jobs
+Description=Run OrthoQ dashboard for submitting ortho jobs
 After=network.target
 
 [Service]
 User=aerotract
 WorkingDirectory=/home/aerotract/software/ortho_maker
-ExecStart=/home/aerotract/software/ortho_maker/run-api.sh
+ExecStart=/home/aerotract/software/ortho_maker/runner/run-dashboard.sh
 Restart=always
 Environment=PYTHONPATH=/home/aerotract/software/ortho_maker
 
