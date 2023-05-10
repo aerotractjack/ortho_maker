@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=aerotract
 WorkingDirectory=/home/aerotract/software/ortho_maker
-ExecStart=/home/aerotract/software/ortho_maker/runner/run-api.sh
+ExecStart=/home/aerotract/software/ortho_maker/runners/run-api.sh
 Restart=always
 Environment=PYTHONPATH=/home/aerotract/software/ortho_maker
 
