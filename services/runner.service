@@ -1,0 +1,14 @@
+[Unit] 
+Description=Run OrthoQ worker for building orthos
+After=network.target
+
+[Service]
+Type=simple
+User=aerotract
+WorkingDirectory=/home/aerotract/software/ortho_runner
+ExecStart=/usr/bin/python3 orthorunner.py
+Restart=always
+Environment=PYTHONPATH=/home/aerotract/software/orthoq
+
+[Install]
+WantedBy=multi-user.target

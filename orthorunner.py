@@ -93,6 +93,6 @@ class OrthoRunner:
 if __name__ =="__main__":
     from orthoq import OrthoQ
     q = OrthoQ("~/ORTHO_Q")
-    runner = OrthoRunner(q, "./workdir")
+    runner = OrthoRunner(q, "/home/aerotract/pix4d-workdir")
     runner.poll_and_run()
 
