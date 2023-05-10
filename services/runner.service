@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User=aerotract
 WorkingDirectory=/home/aerotract/software/ortho_maker
-ExecStart=/bin/ls
+ExecStart=/usr/bin/python3 orthorunner.py
 Restart=always
 Environment=PYTHONPATH=/home/aerotract/software/ortho_maker
 
