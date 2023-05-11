@@ -46,5 +46,5 @@ def q_submit_server():
         "load_balancer_response": lb_check,
         "submission_response": res.json()
     }
-    return render_template("submitted", content=response)
+    return render_template("submitted.html", content=response)
 
