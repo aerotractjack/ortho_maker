@@ -1,6 +1,8 @@
 import requests
 import json
-from secret import URLS
+from secret_manager import get_urls
+
+URLS = get_urls()
 
 '''
 Load Balancer to manage distributing work evenly between servers

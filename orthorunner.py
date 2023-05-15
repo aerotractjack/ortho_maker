@@ -9,7 +9,9 @@ import time
 import datetime
 import sys
 from orthoq import OrthoQ
-from secret import PIX4D_LICENSE
+from secret_manager import get_license
+
+PIX4D_LICENSE = get_license()
 
 '''
 Poll the submission queue and run the Pix4D engine to process orthomosaics
