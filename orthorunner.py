@@ -8,6 +8,7 @@ import shutil
 import time
 import datetime
 import sys
+from uuid import uuid4
 from orthoq import OrthoQ
 from secret_manager import get_license
 
@@ -78,7 +79,8 @@ class OrthoRunner:
     def run_project(self, name, src_img_paths):
         ''' generate an orthomosaic using Pix4D '''
         login_seat(*PIX4D_LICENSE)
-        workdir = Path("/home/aerotract/pix4d-workdir/" + name)
+        tmpdirname = str(uuid4())
+        workdir = Path(f"/tmp/{tmpdirname}" + name)
         workdir.mkdir(parents=True, exist_ok=True)
         project = create_project(name, src_img_paths, work_dir=workdir.as_posix())
         calib_algo = calib.make_algo()
