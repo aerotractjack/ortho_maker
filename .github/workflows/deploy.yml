@@ -17,7 +17,7 @@ jobs:
           username: ${{ secrets.S3USER }}
           key: ${{ secrets.S3KEY }}
           script: |
-            cd /home/aerotract/ortho_maker
+            cd /home/aerotract/software/ortho_maker
             git pull
             cd services/
             /home/aerotract/software/internal-tools/service-destroy.sh runner.service
@@ -32,7 +32,7 @@ jobs:
           username: ${{ secrets.S4USER }}
           key: ${{ secrets.S4KEY }}
           script: |
-            cd /home/aerotract/ortho_maker
+            cd /home/aerotract/software/ortho_maker
             git pull
             cd services/
             /home/aerotract/software/internal-tools/service-destroy.sh runner.service
@@ -47,7 +47,7 @@ jobs:
           username: ${{ secrets.S5USER }}
           key: ${{ secrets.S5KEY }}
           script: |
-            cd /home/aerotract/ortho_maker
+            cd /home/aerotract/software/ortho_maker
             git pull
             cd services/
             /home/aerotract/software/internal-tools/service-destroy.sh dashboard.service
