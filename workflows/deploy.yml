@@ -13,6 +13,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.S3HOST }}
+          port: ${{ secrets.S3PORT }}
           username: ${{ secrets.S3USER }}
           key: ${{ secrets.S3KEY }}
           script: |
@@ -27,6 +28,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.S4HOST }}
+          port: ${{ secrets.S4PORT }}
           username: ${{ secrets.S4USER }}
           key: ${{ secrets.S4KEY }}
           script: |
@@ -41,6 +43,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.S5HOST }}
+          port: ${{ secrets.S5PORT }}
           username: ${{ secrets.S5USER }}
           key: ${{ secrets.S5KEY }}
           script: |
