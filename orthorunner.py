@@ -80,7 +80,7 @@ class OrthoRunner:
         ''' generate an orthomosaic using Pix4D '''
         login_seat(*PIX4D_LICENSE)
         tmpdirname = str(uuid4())
-        workdir = Path(f"/tmp/{tmpdirname}" + name)
+        workdir = Path(f"/home/aerotract/.pix4dworkdircd/{tmpdirname}" + name)
         workdir.mkdir(parents=True, exist_ok=True)
         project = create_project(name, src_img_paths, work_dir=workdir.as_posix())
         calib_algo = calib.make_algo()
