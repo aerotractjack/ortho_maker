@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: deploy runner to S3
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.S3HOST }}
           port: ${{ secrets.S3PORT }}
@@ -25,7 +25,7 @@ jobs:
             /home/aerotract/software/internal-tools/service-destroy.sh api.service
             /home/aerotract/software/internal-tools/service-setup.sh api.service
       - name: deploy runner to S4
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.S4HOST }}
           port: ${{ secrets.S4PORT }}
@@ -40,7 +40,7 @@ jobs:
             /home/aerotract/software/internal-tools/service-destroy.sh api.service
             /home/aerotract/software/internal-tools/service-setup.sh api.service
       - name: deploy dash and runner to S5
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.S5HOST }}
           port: ${{ secrets.S5PORT }}
