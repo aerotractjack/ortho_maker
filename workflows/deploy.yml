@@ -1,0 +1,55 @@
+name: Deploy ortho_maker to S1-S5
+
+on:
+  push:
+    branchs:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy runner to S3
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.S3HOST }}
+          username: ${{ secrets.S3USER }}
+          key: ${{ secrets.S3KEY }}
+          script: |
+            cd /home/aerotract/ortho_maker
+            git pull
+            cd services/
+            /home/aerotract/software/internal-tools/service-destroy.sh runner.service
+            /home/aerotract/software/internal-tools/service-setup.sh runner.service
+            /home/aerotract/software/internal-tools/service-destroy.sh api.service
+            /home/aerotract/software/internal-tools/service-setup.sh api.service
+      - name: deploy runner to S4
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.S4HOST }}
+          username: ${{ secrets.S4USER }}
+          key: ${{ secrets.S4KEY }}
+          script: |
+            cd /home/aerotract/ortho_maker
+            git pull
+            cd services/
+            /home/aerotract/software/internal-tools/service-destroy.sh runner.service
+            /home/aerotract/software/internal-tools/service-setup.sh runner.service
+            /home/aerotract/software/internal-tools/service-destroy.sh api.service
+            /home/aerotract/software/internal-tools/service-setup.sh api.service
+      - name: deploy dash and runner to S5
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.S5HOST }}
+          username: ${{ secrets.S5USER }}
+          key: ${{ secrets.S5KEY }}
+          script: |
+            cd /home/aerotract/ortho_maker
+            git pull
+            cd services/
+            /home/aerotract/software/internal-tools/service-destroy.sh dashboard.service
+            /home/aerotract/software/internal-tools/service-setup.sh dashboard.service
+            /home/aerotract/software/internal-tools/service-destroy.sh runner.service
+            /home/aerotract/software/internal-tools/service-setup.sh runner.service
+            /home/aerotract/software/internal-tools/service-destroy.sh api.service
+            /home/aerotract/software/internal-tools/service-setup.sh api.service
