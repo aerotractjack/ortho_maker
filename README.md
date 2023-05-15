@@ -1,2 +1,2 @@
 # ortho_maker
-Github actions test
+Source code for automated orthomosaic generator
