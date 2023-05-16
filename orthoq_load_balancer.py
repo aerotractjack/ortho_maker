@@ -2,16 +2,18 @@ import requests
 import json
 from secret_manager import get_urls
 
-URLS = get_urls()
-
 '''
 Load Balancer to manage distributing work evenly between servers
 '''
 
 class OrthoQLoadBalancer:
 
-    def __init__(self, urls=URLS):
-        self.urls = urls
+    def __init__(self):
+        pass
+
+    @property
+    def urls(self):
+        return get_urls()
 
     def try_status_check(self, url):
         ''' check the /status endpoint for a url '''
