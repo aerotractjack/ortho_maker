@@ -19,11 +19,7 @@ def index():
 def complete():
     ''' display completed runs '''
     contents, bodies = complete_Q.contents
-    print(bodies)
-    import sys
-    sys.stdout.flush()
-    names = [b["name"] for b in bodies]
-    return render_template("complete.html", contents=contents, names=names)
+    return render_template("complete.html", contents=contents, names=bodies)
 
 @app.route("/statuses")
 def statuses():
