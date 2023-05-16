@@ -20,8 +20,7 @@ class OrthoQLoadBalancer:
         try:
             status_req = requests.get(url + "/status")
             status = json.loads(status_req.text)
-            qlen = status["queue_len"]
-            return qlen
+            return status
         except requests.exceptions.ConnectionError as e:
             return float('inf')
 
@@ -31,7 +30,7 @@ class OrthoQLoadBalancer:
         min_queue_name = ""
         for k in self.urls.keys():
             url = self.urls[k]
-            qlen = self.try_status_check(url)
+            qlen = self.try_status_check(url)["queue_len"]
             if qlen < min_queue_len:
                 min_queue_len = qlen
                 min_queue_name = k
@@ -47,11 +46,12 @@ class OrthoQLoadBalancer:
         outs = []
         for k in self.urls.keys():
             url = self.urls[k]
-            qlen = self.try_status_check(url)
+            status = self.try_status_check(url)
             out = {
                 "url": url,
                 "name": k,
-                "queue_len": qlen
+                "queue_len": status["queue_len"],
+                "bodies": status["bodies"]
             }
             outs.append(out)
         return outs
