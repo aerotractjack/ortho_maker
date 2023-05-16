@@ -9,12 +9,42 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: deploy runner to S1
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.SHOST }}
+          port: ${{ secrets.S1PORT }}
+          username: ${{ secrets.SUSER }}
+          key: ${{ secrets.S1KEY }}
+          script: |
+            cd /home/aerotract/software/ortho_maker
+            git pull
+            cd services/
+            /home/aerotract/software/internal-tools/service-destroy.sh runner.service
+            /home/aerotract/software/internal-tools/service-setup.sh runner.service
+            /home/aerotract/software/internal-tools/service-destroy.sh api.service
+            /home/aerotract/software/internal-tools/service-setup.sh api.service
+      - name: deploy runner to S2
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.SHOST }}
+          port: ${{ secrets.S2PORT }}
+          username: ${{ secrets.SUSER }}
+          key: ${{ secrets.S2KEY }}
+          script: |
+            cd /home/aerotract/software/ortho_maker
+            git pull
+            cd services/
+            /home/aerotract/software/internal-tools/service-destroy.sh runner.service
+            /home/aerotract/software/internal-tools/service-setup.sh runner.service
+            /home/aerotract/software/internal-tools/service-destroy.sh api.service
+            /home/aerotract/software/internal-tools/service-setup.sh api.service
       - name: deploy runner to S3
         uses: appleboy/ssh-action@v0.1.4
         with:
-          host: ${{ secrets.S3HOST }}
+          host: ${{ secrets.SHOST }}
           port: ${{ secrets.S3PORT }}
-          username: ${{ secrets.S3USER }}
+          username: ${{ secrets.SUSER }}
           key: ${{ secrets.S3KEY }}
           script: |
             cd /home/aerotract/software/ortho_maker
@@ -27,9 +57,9 @@ jobs:
       - name: deploy runner to S4
         uses: appleboy/ssh-action@v0.1.4
         with:
-          host: ${{ secrets.S4HOST }}
+          host: ${{ secrets.SHOST }}
           port: ${{ secrets.S4PORT }}
-          username: ${{ secrets.S4USER }}
+          username: ${{ secrets.SUSER }}
           key: ${{ secrets.S4KEY }}
           script: |
             cd /home/aerotract/software/ortho_maker
@@ -42,9 +72,9 @@ jobs:
       - name: deploy dash and runner to S5
         uses: appleboy/ssh-action@v0.1.4
         with:
-          host: ${{ secrets.S5HOST }}
+          host: ${{ secrets.SHOST }}
           port: ${{ secrets.S5PORT }}
-          username: ${{ secrets.S5USER }}
+          username: ${{ secrets.SUSER }}
           key: ${{ secrets.S5KEY }}
           script: |
             cd /home/aerotract/software/ortho_maker
