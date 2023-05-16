@@ -8,12 +8,13 @@ q = OrthoQ("~/ORTHO_Q")
 def status():
     ''' determine if machine is currently running export and 
     how many are in the queue '''
-    contents = q.contents
+    contents, bodies = q.contents
     queue_len = len(contents)
     busy = queue_len > 0
     resp_body = {
         "busy": busy, "queue_len": queue_len,
-        "contents": q.contents
+        "contents": contents,
+        "bodies": bodies
     }
     return jsonify(resp_body)
 

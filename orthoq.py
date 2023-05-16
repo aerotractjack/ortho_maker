@@ -10,7 +10,9 @@ class OrthoQ:
 
     @property
     def contents(self):
-        return os.listdir(self.qdir)
+        contents = os.listdir(self.qdir)
+        bodies = [self.read(c) for c in contents]
+        return contents, bodies
     
     @property
     def next_pop_id(self):
