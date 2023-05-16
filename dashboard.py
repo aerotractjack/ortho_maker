@@ -19,6 +19,7 @@ def index():
 def complete():
     ''' display completed runs '''
     contents, bodies = complete_Q.contents
+    print(bodies)
     names = [b["name"] for b in bodies]
     return render_template("complete.html", contents=contents, names=names)
 
