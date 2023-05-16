@@ -61,3 +61,10 @@ class OrthoQ:
         contents = self.read(pop_id)
         path = self.qdir / pop_id
         return (contents, path)
+    
+    def remove(self, qid):
+        qid = str(qid)
+        if qid[-4:] != ".txt":
+            qid += ".txt"
+        path = self.qdir / qid
+        path.unlink()

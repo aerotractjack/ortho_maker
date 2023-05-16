@@ -56,3 +56,8 @@ def q_submit_server():
     stats = lb.show_all_statuses()
     return render_template("statuses.html", statuses=stats, submission_content=response)
 
+@app.route("/q/remove", methods=["POST"])
+def q_remove():
+    data = request.get_json()
+    print(data)
+    return render_template("complete.html")
