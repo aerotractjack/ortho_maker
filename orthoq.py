@@ -11,7 +11,7 @@ class OrthoQ:
     @property
     def contents(self):
         contents = os.listdir(self.qdir)
-        bodies = [self.read(c) for c in contents]
+        bodies = [self.read(c)["name"] for c in contents]
         return contents, bodies
     
     @property
