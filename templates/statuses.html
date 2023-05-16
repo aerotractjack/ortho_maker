@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
     {% for stat in statuses %}
-        <p> {{ stat }} </p>
+        <p>Name: {{ stat.name }}</p>
+        <p>\t Queue Length: {{ stat.queue_len }} </p>
     {% endfor %}
 {% endblock %}
