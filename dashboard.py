@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import requests
 from orthoq_load_balancer import OrthoQLoadBalancer
 from orthoq import OrthoQ
+import sys
 '''
 Simple Flask app to intake orthomosaic processing requests
 '''
@@ -19,6 +20,8 @@ def index():
 def complete():
     ''' display completed runs '''
     contents, bodies = complete_Q.contents
+    print(contents, bodies)
+    sys.stdout.flush()
     N = len(contents)
     return render_template("complete.html", contents=contents, names=bodies, N=N)
 
@@ -60,4 +63,5 @@ def q_submit_server():
 def q_remove():
     data = request.get_json()
     print(data)
-    return render_template("complete.html")
+    sys.stdout.flush()
+    return redirect(url_for("complete"))
