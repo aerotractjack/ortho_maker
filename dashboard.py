@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import requests
-from orthoq import OrthoQ
 from orthoq_load_balancer import OrthoQLoadBalancer
-
+import sys
 '''
 Simple Flask app to intake orthomosaic processing requests
 '''
@@ -41,9 +40,11 @@ def q_submit_server():
     clean_request = {"name": name, "paths": paths, "dest": dest}
     lb_check = lb.check_statuses()
     lb_url = lb_check["url"] + "/q/submit/server"
-    print(lb_url)
     res = requests.post(lb_url, json=clean_request)
+    print(lb_url)
+    sys.stdout.flush()
     print(res)
+    sys.stdout.flush()
     response = {
         "load_balancer_response": lb_check,
         "submission_response": res.json()
