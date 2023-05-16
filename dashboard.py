@@ -19,7 +19,7 @@ def index():
 def statuses():
     ''' check the statuses of each worker '''
     stats = lb.show_all_statuses()
-    return jsonify(stats)
+    return render_template("statuses.html", statuses=stats)
 
 @app.route("/health")
 def health():
