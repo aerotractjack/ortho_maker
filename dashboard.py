@@ -1,17 +1,26 @@
 from flask import Flask, render_template, request, jsonify
 import requests
 from orthoq_load_balancer import OrthoQLoadBalancer
+from orthoq import OrthoQ
 '''
 Simple Flask app to intake orthomosaic processing requests
 '''
 
 app = Flask(__name__, template_folder="templates")
 lb = OrthoQLoadBalancer()
+complete_Q = OrthoQ("/home/aerotract/NAS/main/OrthoQ_finished")
 
 @app.route("/index")
 def index():
     ''' index method '''
     return render_template("index.html")
+
+@app.route("/complete")
+def complete():
+    ''' display completed runs '''
+    contents, bodies = complete_Q.contents
+    names = [b["name"] for b in bodies]
+    return render_template("complete.html", contents=contents, names=names)
 
 @app.route("/statuses")
 def statuses():
