@@ -17,7 +17,7 @@ def index():
 def statuses():
     ''' check the statuses of each worker '''
     stats = lb.show_all_statuses()
-    return render_template("statuses.html", statuses=stats)
+    return render_template("statuses.html", statuses=stats, submission_content=None)
 
 @app.route("/health")
 def health():
@@ -44,5 +44,6 @@ def q_submit_server():
         "load_balancer_response": lb_check,
         "submission_response": res.json()
     }
-    return render_template("submitted.html", content=response)
+    stats = lb.show_all_statuses()
+    return render_template("statuses.html", statuses=stats, submission_content=response)
 

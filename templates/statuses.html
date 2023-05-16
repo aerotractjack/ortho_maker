@@ -12,6 +12,11 @@
 {% endblock %}
 
 {% block body %}
+
+    {% if submission_content is not None %}
+        <p>Submission successful: {{ submission_content }}</p>
+    {% endif %}
+
     {% for stat in statuses %}
         <div class="item">
                 <h3>Name: {{ stat.name }}</h3>
