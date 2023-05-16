@@ -9,7 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: deploy runner to S1
+      - name: deploy runner and api to S1
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.SHOST }}
@@ -24,7 +24,7 @@ jobs:
             /home/aerotract/software/internal-tools/service-setup.sh runner.service
             /home/aerotract/software/internal-tools/service-destroy.sh api.service
             /home/aerotract/software/internal-tools/service-setup.sh api.service
-      - name: deploy runner to S2
+      - name: deploy runner and api to S2
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.SHOST }}
@@ -39,7 +39,7 @@ jobs:
             /home/aerotract/software/internal-tools/service-setup.sh runner.service
             /home/aerotract/software/internal-tools/service-destroy.sh api.service
             /home/aerotract/software/internal-tools/service-setup.sh api.service
-      - name: deploy runner to S3
+      - name: deploy runner and api to S3
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.SHOST }}
@@ -54,7 +54,7 @@ jobs:
             /home/aerotract/software/internal-tools/service-setup.sh runner.service
             /home/aerotract/software/internal-tools/service-destroy.sh api.service
             /home/aerotract/software/internal-tools/service-setup.sh api.service
-      - name: deploy runner to S4
+      - name: deploy runner and api to S4
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.SHOST }}
@@ -69,7 +69,7 @@ jobs:
             /home/aerotract/software/internal-tools/service-setup.sh runner.service
             /home/aerotract/software/internal-tools/service-destroy.sh api.service
             /home/aerotract/software/internal-tools/service-setup.sh api.service
-      - name: deploy dash and runner to S5
+      - name: deploy dashboard, runner, and api to S5
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.SHOST }}
