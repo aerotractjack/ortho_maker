@@ -19,7 +19,8 @@ def index():
 def complete():
     ''' display completed runs '''
     contents, bodies = complete_Q.contents
-    return render_template("complete.html", contents=contents, names=bodies)
+    N = len(contents)
+    return render_template("complete.html", contents=contents, names=bodies, N=N)
 
 @app.route("/statuses")
 def statuses():

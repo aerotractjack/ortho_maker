@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    {% for i in range(len(contents)) %}
+    {% for i in range(N) %}
         <p>{{ contents[i] }}: {{ names[i] }}</p>
     {% endfor %}
 {% endblock %}
