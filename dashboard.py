@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 import requests
 from orthoq_load_balancer import OrthoQLoadBalancer
 from orthoq import OrthoQ
@@ -20,6 +20,8 @@ def complete():
     ''' display completed runs '''
     contents, bodies = complete_Q.contents
     print(bodies)
+    import sys
+    sys.stdout.flush()
     names = [b["name"] for b in bodies]
     return render_template("complete.html", contents=contents, names=names)
 
