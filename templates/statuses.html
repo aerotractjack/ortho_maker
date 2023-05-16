@@ -1,7 +1,24 @@
 {% extends 'base.html' %}
+
+{% block head %}
+<style>
+    .item {
+        margin-bottom: 20px;
+    }
+    .sub-item {
+        margin-left: 20px;
+    }
+</style>
+{% endblock %}
+
 {% block body %}
     {% for stat in statuses %}
-        <p>Name: {{ stat.name }}</p>
-        <p>\t Queue Length: {{ stat.queue_len }} </p>
+        <div class="item">
+                <h3>Name: {{ stat.name }}</h3>
+                <div class="sub-item">
+                    <p>Queue Length: {{ stat.queue_len }}</p>
+                    <p>URL: {{ stat.url }}</p>
+                </div>
+            </div>
     {% endfor %}
 {% endblock %}
