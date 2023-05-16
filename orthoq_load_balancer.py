@@ -51,6 +51,7 @@ class OrthoQLoadBalancer:
                 "url": url,
                 "name": k,
                 "queue_len": status["queue_len"],
+                "contents": status["contents"],
                 "bodies": status["bodies"]
             }
             outs.append(out)
