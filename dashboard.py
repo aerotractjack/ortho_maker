@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for
 import requests
 from orthoq_load_balancer import OrthoQLoadBalancer
 from orthoq import OrthoQ
-import sys
 '''
 Simple Flask app to intake orthomosaic processing requests
 '''
@@ -13,6 +12,7 @@ complete_Q = OrthoQ("/home/aerotract/NAS/main/OrthoQ_finished")
 
 @app.after_request
 def add_header(response):
+    ''' make sure we are not caching responses '''
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '-1'
@@ -27,8 +27,6 @@ def index():
 def complete():
     ''' display completed runs '''
     contents, bodies = complete_Q.contents
-    print(contents, bodies)
-    sys.stdout.flush()
     N = len(contents)
     return render_template("complete.html", contents=contents, names=bodies, N=N)
 
@@ -69,8 +67,6 @@ def q_submit_server():
 @app.route("/q/remove", methods=["POST"])
 def q_remove():
     data = request.get_json()
-    print(data)
-    sys.stdout.flush()
     try:
         complete_Q.remove(data["filename"])
     except FileNotFoundError as fnfe:
