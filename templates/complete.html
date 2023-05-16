@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block body %}
+    <h1>Completed Orthos waiting to be cleared and marked in TaskMaster</h1>
     {% for i in range(N) %}
         <button id="{{ contents[i] }}">Remove</button>
         <p>{{ contents[i] }}: {{ names[i] }}</p>
