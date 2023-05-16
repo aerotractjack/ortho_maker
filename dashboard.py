@@ -11,6 +11,12 @@ app = Flask(__name__, template_folder="templates")
 lb = OrthoQLoadBalancer()
 complete_Q = OrthoQ("/home/aerotract/NAS/main/OrthoQ_finished")
 
+@app.after_request
+def add_header(response):
+    response.headers['Cache-Control'] = 'no-store'
+    return response
+
+
 @app.route("/index")
 def index():
     ''' index method '''
@@ -64,5 +70,8 @@ def q_remove():
     data = request.get_json()
     print(data)
     sys.stdout.flush()
-    complete_Q.remove(data["filename"])
+    try:
+        complete_Q.remove(data["filename"])
+    except FileNotFoundError as fnfe:
+        print(fnfe)
     return redirect(url_for("complete"))
