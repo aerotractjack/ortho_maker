@@ -16,7 +16,7 @@ class OrthoQ:
     
     @property
     def next_pop_id(self):
-        contents = self.contents
+        contents, _ = self.contents
         if len(contents) == 0:
             return None
         ids = [int(c.split(".")[0]) for c in contents]
@@ -25,7 +25,7 @@ class OrthoQ:
 
     @property
     def next_new_id(self):
-        contents = self.contents
+        contents, _ = self.contents
         num = 0
         if len(contents) > 0:
             ids = [int(c.split(".")[0]) for c in contents]
