@@ -64,4 +64,5 @@ def q_remove():
     data = request.get_json()
     print(data)
     sys.stdout.flush()
+    complete_Q.remove(data["filename"])
     return redirect(url_for("complete"))
