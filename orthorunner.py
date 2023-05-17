@@ -28,6 +28,7 @@ class OrthoRunner:
         '''
         self.q = q
         self.finished_q = OrthoQ("/home/aerotract/NAS/main/OrthoQ_finished")
+        self.mldl_q = OrthoQ("/home/aerotract/NAS/main/mldl_queue")
         self.pollt = int(pollt)
 
     def log(self, *msg):
@@ -58,6 +59,7 @@ class OrthoRunner:
         shutil.copy(queue_path, dest)
         queue_path.unlink()
         self.finished_q.push({"name": name, "dest": dest})
+        self.mldl_q.push({"name": name, "dest": dest})
         shutil.rmtree(workdir)
 
     def poll_and_run(self):

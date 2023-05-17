@@ -1,26 +1,66 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<title>OrthoQ Complete Jobs</title>
+<style>
+    .entry-wrapper {
+        display: flex; /* Use flexbox to create a row layout */
+        align-items: center; /* Center items vertically */
+        margin-bottom: 10px; /* Add spacing between rows */
+        background-color: #f2f2f2; /* Set default background color */
+    }
+
+    .entry-wrapper:nth-child(even) {
+        background-color: #dddddd; /* Set background color for even rows */
+    }
+
+    .remove-btn {
+        margin-right: 10px; /* Add spacing between button and entry */
+    }
+</style>
+</style>
+{% endblock %}
+
 {% block body %}
     <h1>Completed Orthos waiting to be cleared and marked in TaskMaster</h1>
     {% for i in range(N) %}
-        <button id="{{ contents[i] }}">Remove</button>
-        <p>{{ contents[i] }}: {{ names[i] }}</p>
-        <script>
-        document.getElementById("{{ contents[i] }}").addEventListener("click", function() {
-            const body = { filename: "{{ contents[i] }}"}
-            fetch('/q/remove', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(body)
-            })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch((error) => {
-                console.error('Error:', error);
+        <div class="entry-wrapper">
+            <button class="remove-btn" data-entry="{{ contents[i] }}">Remove</button>
+            <p>{{ contents[i] }}: {{ names[i] }}</p>
+        </div>
+    {% endfor %}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var removeButtons = document.querySelectorAll(".remove-btn");
+
+            removeButtons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    var entryId = button.getAttribute("data-entry");
+                    var entryToRemove = button.nextElementSibling;
+
+                    const body = { filename: entryId };
+                    fetch('/q/remove', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(body)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data); // Optional: Log the response data
+                        if (data.success) {
+                            // Remove the entry from the page
+                            var entryWrapper = button.parentNode;
+                            entryWrapper.remove(); // Remove the entry wrapper
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                });
             });
         });
-        </script>
-    {% endfor %}
+    </script>
 {% endblock %}

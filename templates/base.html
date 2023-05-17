@@ -2,19 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>OrthoQ</title>
+    <style>
+        body {
+            margin: 0; /* Remove default margin */
+            padding-top: 60px; /* Add padding to push content below the navbar */
+        }
+        nav {
+            position: fixed; /* Set the navbar to fixed position */
+            top: 0; /* Position the navbar at the top */
+            left: 0; /* Position the navbar at the left */
+            width: 100%; /* Set the width to full */
+            background-color: #f2f2f2; /* Set background color for the navbar */
+            padding: 10px; /* Add some padding for spacing */
+            z-index: 1; /* Set a higher z-index to ensure the navbar is on top of other elements */
+        }
+        nav a {
+            display: inline-block; /* Display links horizontally */
+            padding: 10px; /* Add padding around the links */
+            margin-right: 10px; /* Add some space between links */
+            border: 1px solid #ccc; /* Add a border to each link */
+            border-radius: 4px; /* Round the corners of the links */
+            text-decoration: none; /* Remove default underline */
+            color: #333; /* Set link color */
+        }
+    </style>
     {% block head %}
     {% endblock %}
 </head>
 <body>
+    <nav>
+        <a href="{{ url_for('index') }}">Index Page</a>
+        <a href="{{ url_for('health') }}">Health Check</a>
+        <a href="{{ url_for('statuses') }}">Queue Statuses</a>
+        <a href="{{ url_for('complete') }}">Complete Jobs</a>
+        <a href="{{ url_for('q_submit') }}">Submit New Job</a>
+    </nav>
     {% block body %}
     {% endblock %}
-    <nav>
-        <a href="{{ url_for('index') }}">index</a>
-        <a href="{{ url_for('health') }}">health</a>
-        <a href="{{ url_for('statuses') }}">q statuses</a>
-        <a href="{{ url_for('q_submit') }}">q submit</a>
-        <a href="{{ url_for('complete') }}">complete</a>
-    </nav>
 </body>
 </html>

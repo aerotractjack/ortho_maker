@@ -1,12 +1,96 @@
 {% extends 'base.html' %}
+
+{% block head %}
+<title>OrthoQ Submission</title>
+<style>
+    select {
+        width: 200px; /* Set a fixed width for the dropdowns */
+    }
+</style>
+<script>
+    // Function to fetch and populate the dropdown options based on the selected parent dropdown
+    function populateDropdown(targetDropdown, endpoint, selectedValue) {
+        var dropdownSelect = document.getElementById(targetDropdown);
+
+        // Clear existing options
+        dropdownSelect.innerHTML = "";
+
+        // Fetch options from the API
+        fetch(endpoint)
+            .then(response => response.json())
+            .then(data => {
+                // Populate options
+                data.forEach(option => {
+                    var dropdownOption = document.createElement("option");
+                    dropdownOption.textContent = option.label;
+                    dropdownSelect.appendChild(dropdownOption);
+                });
+
+                // Select the previously selected value, if provided
+                if (selectedValue) {
+                    // Find the option with matching textContent
+                    var selectedOption = Array.from(dropdownSelect.options).find(option => option.textContent === selectedValue);
+                    if (selectedOption) {
+                        selectedOption.selected = true;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // Function to construct the endpoint using the content of the selected option
+    function constructEndpoint() {
+        var companySelect = document.getElementById("companySelect");
+        var projectSelect = document.getElementById("projectSelect");
+        var siteSelect = document.getElementById("siteSelect");
+
+        var companyValue = encodeURIComponent(companySelect.value);
+        var projectValue = encodeURIComponent(projectSelect.value);
+        var siteValue = encodeURIComponent(siteSelect.value);
+
+        var endpoint = `/options/${companyValue}/${projectValue}/${siteValue}`;
+        endpoint = endpoint.replace(/\/$/, '');
+        return endpoint;
+    }
+
+    // Function to submit the form with the constructed endpoint
+    function submitForm() {
+        var endpoint = constructEndpoint();
+        var expPathForm = document.getElementById("expPathForm");
+        expPathForm.action = endpoint;
+        expPathForm.submit();
+    }
+</script>
+{% endblock %}
+
 {% block body %}
-<form action="{{ url_for('q_submit_server') }}" method="post" id="expPathForm">
+<form action="" method="post" id="expPathForm">
     Export Name: <br><textarea rows="1" cols="60" name="expName"></textarea>
     <br>
     Source Image Location(s) [separated by newline]: <br><textarea rows="5" cols="60" name="expPaths"></textarea>
     <br>
     Export Destination: <br><textarea rows="1" cols="60" name="expDest"></textarea>
     <br>
-    <input type="submit">
+    Company:
+    <select name="company" id="companySelect" onchange="populateDropdown('projectSelect', `/options/${encodeURIComponent(this.value)}`, null)">
+        <option value="0">Default</option>
+        {% for company in companies %}
+        <option value="{{ company }}">{{ company }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    Project:
+    <select name="project" id="projectSelect" onchange="populateDropdown('siteSelect', constructEndpoint(), null)">
+        <!-- Options will be dynamically populated -->
+    </select>
+    <br>
+    Site:
+    <select name="site" id="siteSelect">
+        <!-- Options will be dynamically populated -->
+    </select>
+    <br>
+    <button type="button" onclick="submitForm()">Submit</button>
 </form>
 {% endblock %}
