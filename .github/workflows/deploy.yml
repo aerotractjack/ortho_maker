@@ -2,7 +2,7 @@ name: Deploy ortho_maker to S1-S5
 
 on:
   push:
-    branchs:
+    branches:
       - main
 
 jobs:
