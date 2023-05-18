@@ -68,3 +68,12 @@ class OrthoQ:
             qid += ".txt"
         path = self.qdir / qid
         path.unlink()
+
+def get_default_q():
+    return OrthoQ("~/ORTHOQ")
+
+def get_complete_q():
+    return OrthoQ("/home/aerotract/NAS/main/OrthoQ_finished")
+
+def get_mldl_q():
+    return OrthoQ("/home/aerotract/NAS/main/mldl_queue")

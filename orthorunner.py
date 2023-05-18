@@ -9,7 +9,7 @@ import time
 import datetime
 import sys
 from uuid import uuid4
-from orthoq import OrthoQ
+from orthoq import get_complete_q, get_mldl_q
 from secret_manager import get_license
 
 PIX4D_LICENSE = get_license()
@@ -27,8 +27,8 @@ class OrthoRunner:
         pollt (int): time to sleep between polling queue
         '''
         self.q = q
-        self.finished_q = OrthoQ("/home/aerotract/NAS/main/OrthoQ_finished")
-        self.mldl_q = OrthoQ("/home/aerotract/NAS/main/mldl_queue")
+        self.finished_q = get_complete_q()
+        self.mldl_q = get_mldl_q()
         self.pollt = int(pollt)
 
     def log(self, *msg):

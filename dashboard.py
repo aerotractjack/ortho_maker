@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, jsonify
 import requests
 import os 
 from orthoq_load_balancer import OrthoQLoadBalancer
-from orthoq import OrthoQ
+from orthoq import get_complete_q
+
 '''
 Simple Flask app to intake orthomosaic processing requests
 '''
@@ -10,7 +11,7 @@ Simple Flask app to intake orthomosaic processing requests
 app = Flask(__name__, template_folder="templates")
 app.debug = True
 lb = OrthoQLoadBalancer()
-complete_Q = OrthoQ("/home/aerotract/NAS/main/OrthoQ_finished")
+complete_Q = get_complete_q()
 NASclients = "/home/aerotract/NAS/main/Clients"
 
 @app.after_request
@@ -53,9 +54,6 @@ def q_submit():
 @app.route("/q/submit/server", methods=["POST"])
 def q_submit_server():
     ''' show a message saying where the ortho was submitted '''
-    # name = request.form["expName"]
-    # paths = request.form['expPaths'].strip("\r\n").split("\r\n")
-    # paths = [p for p in paths if p != '']
     sel_paths = request.form.getlist('source_image_option')
     dest_dir = request.form['expDest']
     if len(dest_dir.strip(" ")) == 0:
@@ -85,6 +83,7 @@ def q_submit_server():
 
 @app.route("/q/remove", methods=["POST"])
 def q_remove():
+    ''' remove a complete job from the queue '''
     data = request.get_json()
     try:
         complete_Q.remove(data["filename"])
@@ -94,6 +93,7 @@ def q_remove():
 
 @app.route("/options/<company>")
 def options_company(company):
+    ''' populate the dropdown list for project options for a company '''
     sel = os.listdir(os.path.join(NASclients, company))
     resp = []
     for s in sel:
@@ -103,6 +103,7 @@ def options_company(company):
 
 @app.route("/options/<company>/<project>")
 def options_company_project(company, project):
+    ''' populate the dropdown list for site options for a company+project '''
     sel = os.listdir(os.path.join(NASclients, company, project))
     dropdown = []
     for s in sel:
@@ -112,6 +113,7 @@ def options_company_project(company, project):
 
 @app.route("/options/<company>/<project>/<site>")
 def options_company_project_site(company, project, site):
+    ''' populate the checkbox menu for source image options for a company+project+site '''
     sel = os.listdir(os.path.join(NASclients, company, project, site, "Data", "src_imgs"))
     checkpointMenu = []
     for s in sel:

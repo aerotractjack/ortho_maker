@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify
-from orthoq import OrthoQ
+from orthoq import get_default_q
 
 app = Flask(__name__, template_folder="templates")
-q = OrthoQ("~/ORTHO_Q")
+q = get_default_q()
 
 @app.route("/status")
 def status():
