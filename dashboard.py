@@ -12,7 +12,7 @@ complete_Q = OrthoQ("/home/aerotract/NAS/main/OrthoQ_finished")
 
 data = {
     "Company1": {
-        "C1P1": ["C1P1S1", "C1P1S2"],
+        "C1P1xxxxx": ["C1P1S1", "C1P1S2"],
         "C1P2": ["C1P2S1", "C1P2S2"],
     },
     "Company2": {
