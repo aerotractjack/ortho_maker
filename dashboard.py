@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import requests
+import os 
 from orthoq_load_balancer import OrthoQLoadBalancer
 from orthoq import OrthoQ
 '''
@@ -7,19 +8,10 @@ Simple Flask app to intake orthomosaic processing requests
 '''
 
 app = Flask(__name__, template_folder="templates")
+app.debug = True
 lb = OrthoQLoadBalancer()
 complete_Q = OrthoQ("/home/aerotract/NAS/main/OrthoQ_finished")
-
-data = {
-    "Company1": {
-        "C1P1xxxxx": ["C1P1S1", "C1P1S2"],
-        "C1P2": ["C1P2S1", "C1P2S2"],
-    },
-    "Company2": {
-        "C2P1": ["C2P1S1", "C2P1S2"],
-        "C2P2": ["C2P2S1", "C2P2S2"],
-    }
-}
+NASclients = "/home/aerotract/NAS/main/Clients"
 
 @app.after_request
 def add_header(response):
@@ -55,21 +47,31 @@ def health():
 @app.route("/q/submit", methods=["POST", "GET"])
 def q_submit():
     ''' render submission form '''
-    comps = list(data.keys())
+    comps = os.listdir(NASclients)
     return render_template("submit.html", companies=comps)
 
 @app.route("/q/submit/server", methods=["POST"])
 def q_submit_server():
     ''' show a message saying where the ortho was submitted '''
-    name = request.form["expName"]
-    paths = request.form['expPaths'].strip("\r\n").split("\r\n")
-    paths = [p for p in paths if p != '']
-    dest = request.form['expDest']
+    # name = request.form["expName"]
+    # paths = request.form['expPaths'].strip("\r\n").split("\r\n")
+    # paths = [p for p in paths if p != '']
+    sel_paths = request.form.getlist('source_image_option')
+    dest_dir = request.form['expDest']
+    if len(dest_dir.strip(" ")) == 0:
+        dest_dir = "ortho"
+    dest = os.path.join(NASclients, comp, proj, site, "Data", dest_dir)
+    comp = request.form["company"]
+    proj = request.form["project"]
+    site = request.form["site"]
+    name = f"{comp}-{proj}-{site}"
+    abs_paths = []
+    for sp in sel_paths:
+        ap = os.path.join(NASclients, comp, proj, site, "Data", "src_imgs", sp)
+        abs_paths.append(ap)
     clean_request = {
-        "name": name, "paths": paths, "dest": dest,
-        "company": request.form["company"],
-        "project": request.form["project"],
-        "site": request.form["site"]
+        "name": name, "paths": abs_paths, "dest": dest,
+        "company": comp, "project": proj, "site": site
     }
     lb_check = lb.check_statuses()
     lb_url = lb_check["url"] + "/q/submit/server"
@@ -92,18 +94,30 @@ def q_remove():
 
 @app.route("/options/<company>")
 def options_company(company):
-    sel = data[company]
-    resp = []
-    for (k,v) in sel.items():
-        r = {"value": k, "label": k}
-        resp.append(r)
-    return jsonify(resp)
-
-@app.route("/options/<company>/<site>")
-def options_company_site(company, site):
-    sel = data[company][site]
+    sel = os.listdir(os.path.join(NASclients, company))
     resp = []
     for s in sel:
         r = {"value": s, "label": s}
         resp.append(r)
-    return jsonify(resp)
+    return jsonify({"dropdown": resp})
+
+@app.route("/options/<company>/<project>")
+def options_company_project(company, project):
+    sel = os.listdir(os.path.join(NASclients, company, project))
+    dropdown = []
+    for s in sel:
+        r = {"value": s, "label": s}
+        dropdown.append(r)
+    return jsonify({"dropdown": dropdown})
+
+@app.route("/options/<company>/<project>/<site>")
+def options_company_project_site(company, project, site):
+    sel = os.listdir(os.path.join(NASclients, company, project, site, "Data", "src_imgs"))
+    checkpointMenu = []
+    for s in sel:
+        r = {"value": s, "label": s}
+        checkpointMenu.append(r)
+    return jsonify({"checkpointMenu": checkpointMenu})
+
+if __name__ == '__main__':
+    app.run(port=5001)

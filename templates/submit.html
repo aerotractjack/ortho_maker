@@ -4,28 +4,29 @@
 <title>OrthoQ Submission</title>
 <style>
     select {
-        width: 200px; /* Set a fixed width for the dropdowns */
+        width: 200px;
+        /* Set a fixed width for the dropdowns */
     }
 </style>
 <script>
     // Function to fetch and populate the dropdown options based on the selected parent dropdown
     function populateDropdown(targetDropdown, endpoint, selectedValue) {
         var dropdownSelect = document.getElementById(targetDropdown);
-
         // Clear existing options
         dropdownSelect.innerHTML = "";
-
         // Fetch options from the API
         fetch(endpoint)
             .then(response => response.json())
             .then(data => {
                 // Populate options
-                data.forEach(option => {
+                var defaultOption = document.createElement("option");
+                defaultOption.textContent = "Please make a selection";
+                dropdownSelect.appendChild(defaultOption);
+                data.dropdown.forEach(option => {
                     var dropdownOption = document.createElement("option");
                     dropdownOption.textContent = option.label;
                     dropdownSelect.appendChild(dropdownOption);
                 });
-
                 // Select the previously selected value, if provided
                 if (selectedValue) {
                     // Find the option with matching textContent
@@ -39,6 +40,37 @@
                 console.error('Error:', error);
             });
     }
+
+    // Function to fetch and populate the checkpoint menu options based on the selected project
+    function populateCheckpointMenu(targetCheckpoint, endpoint) {
+        var checkpointSelect = document.getElementById(targetCheckpoint);
+
+        // Clear existing options
+        checkpointSelect.innerHTML = "";
+
+        fetch(endpoint)
+            .then(response => response.json())
+            .then(data => {
+                // Populate options
+                data.checkpointMenu.forEach(option => {
+                    var checkboxLabel = document.createElement("label");
+                checkboxLabel.textContent = option.label;
+
+                var checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.name = "source_image_option";
+                checkbox.value = option.value;
+
+                checkboxLabel.appendChild(checkbox);
+                checkpointSelect.appendChild(checkboxLabel);
+                checkpointSelect.appendChild(document.createElement("br"));
+            });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
 
     // Function to construct the endpoint using the content of the selected option
     function constructEndpoint() {
@@ -57,7 +89,7 @@
 
     // Function to submit the form with the constructed endpoint
     function submitForm() {
-        var endpoint = constructEndpoint();
+        var endpoint = "/q/submit/server";
         var expPathForm = document.getElementById("expPathForm");
         expPathForm.action = endpoint;
         expPathForm.submit();
@@ -67,30 +99,37 @@
 
 {% block body %}
 <form action="" method="post" id="expPathForm">
-    Export Name: <br><textarea rows="1" cols="60" name="expName"></textarea>
-    <br>
-    Source Image Location(s) [separated by newline]: <br><textarea rows="5" cols="60" name="expPaths"></textarea>
-    <br>
-    Export Destination: <br><textarea rows="1" cols="60" name="expDest"></textarea>
-    <br>
-    Company:
-    <select name="company" id="companySelect" onchange="populateDropdown('projectSelect', `/options/${encodeURIComponent(this.value)}`, null)">
-        <option value="0">Default</option>
-        {% for company in companies %}
-        <option value="{{ company }}">{{ company }}</option>
-        {% endfor %}
-    </select>
-    <br>
-    Project:
-    <select name="project" id="projectSelect" onchange="populateDropdown('siteSelect', constructEndpoint(), null)">
-        <!-- Options will be dynamically populated -->
-    </select>
-    <br>
-    Site:
-    <select name="site" id="siteSelect">
-        <!-- Options will be dynamically populated -->
-    </select>
-    <br>
-    <button type="button" onclick="submitForm()">Submit</button>
+    <form action="" method="post" id="expPathForm">
+        <label for="companySelect">Company:</label>
+        <select name="company" id="companySelect"
+            onchange="populateDropdown('projectSelect', `/options/${encodeURIComponent(this.value)}`, null)">
+            <option value="0">Default</option>
+            {% for company in companies %}
+            <option value="{{ company }}">{{ company }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <label for="projectSelect">Project:</label>
+        <select name="project" id="projectSelect" onchange="populateDropdown('siteSelect', constructEndpoint(), null)">
+            <!-- Options will be dynamically populated -->
+        </select>
+        <br><br>
+        <label for="siteSelect">Site:</label>
+        <select name="site" id="siteSelect" onchange="populateCheckpointMenu('srcImgSelect', constructEndpoint())">
+            <!-- Options will be dynamically populated -->
+        </select>
+        <br><br>
+        <h2>Select Source Image Locations:</h2>
+        <div id="srcImgSelect">
+            <!-- Dynamically generated checkboxes will be inserted here -->
+        </div>
+        <br><br>
+        <h2>Export Destination Override (for testing/saving multiple orthos):</h2>
+        <p>Leave blank to save to default destination (ex. client/project/site/Data/ortho)</p>
+        <textarea rows="1" cols="60" name="expDest"></textarea>
+        <br><br>
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+    
 </form>
 {% endblock %}
