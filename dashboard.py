@@ -60,12 +60,12 @@ def q_submit_server():
     dest_dir = request.form['expDest']
     if len(dest_dir.strip(" ")) == 0:
         dest_dir = "ortho"
-    dest = os.path.join(NASclients, comp, proj, site, "Data", dest_dir)
     comp = request.form["company"]
     proj = request.form["project"]
     site = request.form["site"]
     name = f"{comp}-{proj}-{site}"
     abs_paths = []
+    dest = os.path.join(NASclients, comp, proj, site, "Data", dest_dir)
     for sp in sel_paths:
         ap = os.path.join(NASclients, comp, proj, site, "Data", "src_imgs", sp)
         abs_paths.append(ap)
