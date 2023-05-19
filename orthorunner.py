@@ -9,7 +9,7 @@ import time
 import datetime
 import sys
 from uuid import uuid4
-from orthoq import get_complete_q, get_mldl_q
+from orthoq import get_default_q, get_complete_q, get_mldl_q
 from secret_manager import get_license
 
 PIX4D_LICENSE = get_license()
@@ -93,7 +93,7 @@ class OrthoRunner:
         return workdir
 
 if __name__ =="__main__":
-    q = OrthoQ("~/ORTHO_Q")
+    q = get_default_q()
     runner = OrthoRunner(q)
     print("Beginning to poll for files in queue...")
     runner.poll_and_run()
