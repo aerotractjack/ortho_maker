@@ -70,7 +70,7 @@ class OrthoQ:
         path.unlink()
 
 def get_default_q():
-    return OrthoQ("~/ORTHOQ")
+    return OrthoQ("~/ORTHO_Q")
 
 def get_complete_q():
     return OrthoQ("/home/aerotract/NAS/main/OrthoQ_finished")
